@@ -23,7 +23,7 @@ public class MaterialesDao {
         this.gson = new GsonBuilder().setPrettyPrinting().create();
     }
 
-    public ArrayList<MaterialDto> obtenerTodo() throws IOException {
+    public ArrayList<MaterialDto> obtenerTodo() {
         try {
             String datos = Files.readString(this.archivo);
             Type tipoLista = new TypeToken<ArrayList<MaterialDto>>() {}.getType();
@@ -37,7 +37,7 @@ public class MaterialesDao {
             return new ArrayList<>();
         }
     }
-    public void guardarTodo(ArrayList<MaterialDto> materiales) throws IOException {
+    public void guardarTodo(ArrayList<MaterialDto> materiales) {
         try {
             String datos = this.gson.toJson(materiales);
             Files.writeString(this.archivo, datos);

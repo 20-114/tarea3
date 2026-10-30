@@ -48,28 +48,12 @@ public class MaterialesController {
         this.materialesService = new MaterialService();
     }
 
-    public boolean evaluarExistenciaId(Long id) throws IOException {
-        ArrayList<MaterialDto> lista = this.materialesService.leerTodos();
-        for (MaterialDto material : lista) {
-            if (id.equals(material.getId())) {
-                return false;
-            }
-        }
-        return true;
-    }
+
     public void cargarTabla() throws IOException {
         ArrayList<MaterialDto> listaJsonDao = materialesService.leerTodos();
         listaObservable.setAll(listaJsonDao);
     }
-    public Long contadorId() throws IOException {
-        Long id = 0L;
-        while (true){
-            id += 1;
-            if (evaluarExistenciaId(id)){
-                return id;
-            };
-        }
-    }
+
     public MaterialDto buscarMaterialPorId(Long id) throws Exception {
         MaterialDto materialBuscado = null;
         ArrayList<MaterialDto> lista = materialesService.leerTodos();
@@ -86,43 +70,67 @@ public class MaterialesController {
     }
 
     public void handleAgregarMaterial(ActionEvent actionEvent) throws IOException {
-        String nombre = txtNombre.getText();
-        Long id = contadorId();
-        MaterialDto nuevoMaterial = new MaterialDto(id, nombre);
-        this.materialesService.crear(nuevoMaterial);
-        cargarTabla();
-        txtNombre.clear();
+        try {
+            String nombre = txtNombre.getText();
+            if (!nombre.isEmpty()) {
+                Long id = this.materialesService.contadorId();
+                MaterialDto nuevoMaterial = new MaterialDto(id, nombre);
+                this.materialesService.crear(nuevoMaterial);
+                cargarTabla();
+                txtNombre.clear();
+            } else {
+                throw new IOException("El campo nombre no puede estar vacio");
+            }
+        } catch (IOException e){
+            System.out.println("MaterialesController handleAgregarMaterial: "+ e.getMessage());
+        }
     }
 
     public void handleEliminarMaterial(ActionEvent actionEvent) throws IOException {
-        if (txtId.getText() != null){
-            Long id = Long.parseLong(txtId.getText());
-            if (!evaluarExistenciaId(id)){
+            if (!txtId.getText().isEmpty()) {
+                Long id = Long.parseLong(txtId.getText());
                 materialesService.eliminar(id);
+            } else {
+                this.mensaje("El campo 'id' no puede estar vacio y debe ser un numero entero");
             }
-        }
+
         cargarTabla();
         txtId.clear();
+    }
+
+    private void mensaje(String mensaje){
+        Alert a = new Alert(Alert.AlertType.ERROR);
+        a.setTitle("Error de formulario");
+        a.setHeaderText(mensaje);
+        a.show();
     }
 
     public void handleModificarMaterial(ActionEvent actionEvent) throws Exception {
-        MaterialDto nuevoMaterial = null;
-        if (txtId.getText() != null) {
-            Long id = Long.parseLong(txtId.getText());
-            if (!evaluarExistenciaId(id)) {
-                nuevoMaterial = new MaterialDto(id, txtNombre.getText());
-                materialesService.actualizar(id, nuevoMaterial);
+            if (!txtNombre.getText().isEmpty()) {
+                MaterialDto nuevoMaterial = null;
+                if (!txtId.getText().isEmpty()) {
+                    Long id = Long.parseLong(txtId.getText());
+                    nuevoMaterial = new MaterialDto(id, txtNombre.getText());
+                    materialesService.actualizar(id, nuevoMaterial);
+                }
+                cargarTabla();
+                txtId.clear();
+                txtNombre.clear();
+            } else {
+                this.mensaje("El campo 'nombre' no puede setar vacio para hacer la modificación");
             }
-        }
-        cargarTabla();
-        txtId.clear();
-        txtNombre.clear();
+
     }
 
-    public void handleSeleccionarMaterial(MouseEvent mouseEvent) throws IOException {
-        System.out.println(this.materialesService.leerTodos().size());
+    public void handleSeleccionarMaterial(MouseEvent mouseEvent){
+        MaterialDto material = (MaterialDto) this.tblMateriales.getSelectionModel().getSelectedItem();
+        if (material != null) {
+            //this.txtNombre.setText(material.getNombre());
+            this.txtId.setText(material.getId().toString());
+        }
+        /*System.out.println(this.materialesService.leerTodos().size());
         for (MaterialDto material : this.materialesService.leerTodos()){
             System.out.println(material);
-        }
+        }*/
     }
 }

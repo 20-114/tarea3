@@ -7,15 +7,16 @@ import java.util.ArrayList;
 
 public interface IMaterialesService {
     // C Crear, R Leer (todos, por id), U Actualizar, D Eliminar
-    void crear(MaterialDto material) throws IOException;
-    ArrayList<MaterialDto> leerTodos() throws IOException;
-    MaterialDto leerPorId(Long id) throws IOException;
-    void actualizar(MaterialDto material) throws IOException;
-    void actualizar(Long id, MaterialDto materialDto) throws IOException;
-    void eliminar(Long id) throws IOException;
-    void eliminar(MaterialDto material) throws IOException;
+    void crear(MaterialDto material);
+    ArrayList<MaterialDto> leerTodos();
+    MaterialDto leerPorId(Long id);
+    void actualizar(MaterialDto material);
+    void actualizar(Long id, MaterialDto materialDto);
+    void eliminar(Long id);
+    void eliminar(MaterialDto material);
     // metodos custom
     // buscar por parte del nombre
-    MaterialDto buscarPorParteDelNombre(String nombre) throws IOException;
-    MaterialDto buscarPorNombreExacto(String nombre) throws IOException;
+    MaterialDto buscarPorParteDelNombre(String nombre);
+    MaterialDto buscarPorNombreExacto(String nombre);
+    Long contadorId();
 }

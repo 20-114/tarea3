@@ -14,20 +14,32 @@ public class MaterialService implements IMaterialesService {
         this.dao = new MaterialesDao();
     }
 
+    private boolean evaluarExistenciaId(Long id){
+        ArrayList<MaterialDto> lista = this.leerTodos();
+        for (MaterialDto material : lista) {
+            if (id.equals(material.getId())) {
+                return false;
+            }
+        }
+        return true;
+    }
+    public Long contadorId() {
+        return System.currentTimeMillis();
+    }
     @Override
-    public void crear(MaterialDto material) throws IOException {
+    public void crear(MaterialDto material) {
         ArrayList<MaterialDto> listado = this.dao.obtenerTodo();
         listado.add(material);
         this.dao.guardarTodo(listado);
     }
 
     @Override
-    public ArrayList<MaterialDto> leerTodos() throws IOException {
+    public ArrayList<MaterialDto> leerTodos() {
         return this.dao.obtenerTodo();
     }
 
     @Override
-    public MaterialDto leerPorId(Long id) throws IOException {
+    public MaterialDto leerPorId(Long id) {
         MaterialDto encontrado = null;
         ArrayList<MaterialDto> listado = this.dao.obtenerTodo();
         for (MaterialDto mat: listado) {
@@ -39,7 +51,7 @@ public class MaterialService implements IMaterialesService {
     }
 
     @Override
-    public void actualizar(MaterialDto material) throws IOException {
+    public void actualizar(MaterialDto material) {
         ArrayList<MaterialDto> listado = this.dao.obtenerTodo();
         for (MaterialDto mat: listado) {
             if (mat.getId().equals(material.getId())) {
@@ -50,7 +62,7 @@ public class MaterialService implements IMaterialesService {
     }
 
     @Override
-    public void actualizar(Long id, MaterialDto materialDto) throws IOException {
+    public void actualizar(Long id, MaterialDto materialDto) {
         ArrayList<MaterialDto> listado = this.dao.obtenerTodo();
         for (MaterialDto mat: listado) {
             if (mat.getId().equals(id)) {
@@ -61,19 +73,21 @@ public class MaterialService implements IMaterialesService {
     }
 
     @Override
-    public void eliminar(Long id) throws IOException {
-        ArrayList<MaterialDto> listado = this.dao.obtenerTodo();
-        ArrayList<MaterialDto> listaNueva = new ArrayList<>();
-        for (MaterialDto mat: listado) {
-            if (!mat.getId().equals(id)) {
-                listaNueva.add(mat);
+    public void eliminar(Long id) {
+            ArrayList<MaterialDto> listado = this.dao.obtenerTodo();
+            ArrayList<MaterialDto> listaNueva = new ArrayList<>();
+            for (MaterialDto mat : listado) {
+                //if (!evaluarExistenciaId(id)) {
+                    if (!mat.getId().equals(id)) {
+                        listaNueva.add(mat);
+                    }
+                //}
             }
-        }
-        this.dao.guardarTodo(listaNueva);
+            this.dao.guardarTodo(listaNueva);
     }
 
     @Override
-    public void eliminar(MaterialDto material) throws IOException {
+    public void eliminar(MaterialDto material) {
         ArrayList<MaterialDto> listado = this.dao.obtenerTodo();
         for (MaterialDto mat: listado) {
             if (mat.getId().equals(material.getId())) {
@@ -84,7 +98,7 @@ public class MaterialService implements IMaterialesService {
     }
 
     @Override
-    public MaterialDto buscarPorParteDelNombre(String nombre) throws IOException {
+    public MaterialDto buscarPorParteDelNombre(String nombre) {
         MaterialDto encontrado = null;
         ArrayList<MaterialDto> listado = this.dao.obtenerTodo();
         for (MaterialDto mat: listado) {
@@ -96,7 +110,7 @@ public class MaterialService implements IMaterialesService {
     }
 
     @Override
-    public MaterialDto buscarPorNombreExacto(String nombre) throws IOException {
+    public MaterialDto buscarPorNombreExacto(String nombre) {
         MaterialDto encontrado = null;
         ArrayList<MaterialDto> listado = this.dao.obtenerTodo();
         for (MaterialDto mat: listado) {

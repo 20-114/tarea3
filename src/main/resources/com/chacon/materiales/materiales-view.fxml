@@ -17,7 +17,7 @@
         <HBox spacing="10">
             <TextField fx:id="txtNombre" promptText="nombre" />
             <Button fx:id="btnAgregar" onAction="#handleAgregarMaterial" text="Agregar" />
-            <TextField fx:id="txtId" promptText="id" />
+            <TextField fx:id="txtId" promptText="id" disable="true"/>
             <Button fx:id="btnEliminar" onAction="#handleEliminarMaterial" text="Eliminar" />
             <Button fx:id="btnModificar" onAction="#handleModificarMaterial" text="Modificar" />
         </HBox>
