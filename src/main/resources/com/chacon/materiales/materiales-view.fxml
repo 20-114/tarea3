@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER"
+      spacing="20.0"
+      xmlns:fx="http://javafx.com/fxml/1"
+      xmlns="http://javafx.com/javafx/17.0.12"
+      fx:controller="com.chacon.materiales.controller.MaterialesController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <VBox>
+        <HBox spacing="10">
+            <TextField fx:id="txtNombre" promptText="nombre" />
+            <Button fx:id="btnAgregar" onAction="#handleAgregarMaterial" text="Agregar" />
+            <TextField fx:id="txtId" promptText="id" />
+            <Button fx:id="btnEliminar" onAction="#handleEliminarMaterial" text="Eliminar" />
+            <Button fx:id="btnModificar" onAction="#handleModificarMaterial" text="Modificar" />
+        </HBox>
+    </VBox>
+        <TableView fx:id="tblMateriales" onMouseClicked="#handleSeleccionarMaterial">
+            <columns>
+                <TableColumn fx:id="colId" text="ID"/>
+                <TableColumn fx:id="colNombre" text="Nombre"/>
+            </columns>
+        </TableView>
+</VBox>
